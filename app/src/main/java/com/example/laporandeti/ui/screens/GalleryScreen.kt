@@ -11,13 +11,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable // Pastikan ini diimpor
-import androidx.compose.runtime.LaunchedEffect // Pastikan ini diimpor
-import androidx.compose.runtime.getValue // Pastikan ini diimpor
-import androidx.compose.runtime.mutableStateListOf // Pastikan ini diimpor
-import androidx.compose.runtime.mutableStateOf // Pastikan ini diimpor
-import androidx.compose.runtime.remember // Pastikan ini diimpor
-import androidx.compose.runtime.setValue // Pastikan ini diimpor
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf // Penting: Ini untuk membuat daftar yang bisa diobservasi
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
@@ -29,7 +29,7 @@ import com.example.laporandeti.util.APP_IMAGE_SUBFOLDER
 import com.example.laporandeti.util.getAppOutputDirectory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
+import java.io.File // Penting: Ini untuk tipe File
 
 const val TAG_GALLERY_SCREEN = "GalleryScreen"
 
@@ -38,9 +38,10 @@ fun GalleryScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    // PERBAIKAN: Secara eksplisit tentukan tipe argumen untuk mutableStateListOf
-    // Ini akan menyelesaikan error 'Cannot infer type for this parameter. Specify it explicitly.43' dan 'Not enough information to infer type argument for 'T'.43'
-    val imageFiles = remember { mutableStateListOf<File>() } // Ini baris 43 Anda sekarang
+    // --- PERBAIKAN PENTING DI SINI ---
+    // Baris ini adalah penyebab utama error Anda.
+    // Kita harus secara eksplisit menentukan bahwa daftar ini akan berisi objek 'File'.
+    val imageFiles = remember { mutableStateListOf<File>() } // Ini sekarang baris 52
 
     // Memuat ulang daftar file saat komponen ini pertama kali di-compose
     // atau jika ada perubahan signifikan yang memerlukan pembaruan daftar file.
@@ -79,8 +80,10 @@ fun GalleryScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
-                // PERBAIKAN: Setelah `imageFiles` memiliki tipe eksplisit (<File>), error di baris ini (45) akan otomatis hilang
-                items(imageFiles, key = { it.absolutePath }) { file -> // Ini baris 45 Anda sekarang
+                // --- PERBAIKAN JUGA BERLAKU DI SINI ---
+                // Setelah 'imageFiles' di baris 52 diketahui sebagai 'MutableList<File>',
+                // maka panggilan 'items' ini akan otomatis mengenali tipenya sebagai 'Collection<File>'.
+                items(imageFiles, key = { it.absolutePath }) { file -> // Ini sekarang baris 54
                     // Menggunakan key untuk LazyVerticalGrid agar performa lebih baik
                     // saat item ditambahkan/dihapus
                     GalleryItem(file = file) { clickedFile ->

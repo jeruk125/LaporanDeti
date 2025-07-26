@@ -37,6 +37,11 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        // PERBAIKAN PENTING DI SINI:
+        // Ubah versi ekstensi compiler Kotlin agar sesuai dengan Kotlin 1.9.0
+        kotlinCompilerExtensionVersion = "1.5.4" // Ganti dari "1.5.1" menjadi "1.5.4"
+    }
 }
 
 // Cara mendefinisikan variabel versi di Kotlin DSL
@@ -55,6 +60,15 @@ dependencies {
     implementation(libs.androidx.ui.graphics) // Jika Compose
     implementation(libs.androidx.ui.tooling.preview) // Jika Compose
     implementation(libs.androidx.material3) // Jika Compose
+
+    // Pastikan versi BOM Compose juga terkini dan kompatibel jika ada pembaruan
+    // Saat ini, "2023.08.00" mungkin masih kompatibel, tapi Anda bisa mempertimbangkan
+    // untuk memperbaruinya ke versi yang lebih baru jika ada masalah lain di masa depan.
+    implementation(platform("androidx.compose:compose-bom:2023.08.00")) // Biarkan ini dulu
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
 
     // Dependensi Material Icons (jika digunakan)
     implementation(libs.androidx.material.icons.core)
