@@ -64,7 +64,7 @@ dependencies {
     // Pastikan versi BOM Compose juga terkini dan kompatibel jika ada pembaruan
     // Saat ini, "2023.08.00" mungkin masih kompatibel, tapi Anda bisa mempertimbangkan
     // untuk memperbaruinya ke versi yang lebih baru jika ada masalah lain di masa depan.
-    implementation(platform("androidx.compose:compose-bom:2023.08.00")) // Biarkan ini dulu
+    implementation(platform("androidx.compose:compose-bom:2025.07.00")) // Biarkan ini dulu
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
